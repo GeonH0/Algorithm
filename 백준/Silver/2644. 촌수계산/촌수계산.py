@@ -1,22 +1,36 @@
-from tabnanny import check
+
+def bfs(s,e):
+    q =[]
+    v=[0]*(N+1)
+    
+    q.append(s)
+    v[s]=1
+
+    while q:
+        c = q.pop(0)
+        #정답 처리
+        if c== e:
+            return v[c]-1
+
+        for n in arr[c]:
+            if not v[n]:
+                q.append(n)
+                v[n]+=v[c]+1
+    return -1
 
 
-def dfs(node):
-    for n in graph[node]:
-        if check[n]==0:
-            check[n]=check[node]+1
-            dfs(n)
 
 
+N = int(input())
+a,b = map(int,input().split())
+M = int(input())
+arr=[[] for _ in range(N+1)]
+v=[0]*(N+1)
 
+for _ in range(M):
+    x,y = map(int,input().split())
+    arr[x].append(y)
+    arr[y].append(x)
 
-n = int(input())
-graph=[[]for _ in range(n+1)]
-j,k = map(int,input().split())
-for _ in range(int(input())):
-    u,v = map(int,input().split())
-    graph[u].append(v)
-    graph[v].append(u)
-check=[0]*(n+1)
-dfs(j)
-print(check[k] if check[k]>0 else -1)
+ans = bfs(a,b)
+print(ans)
