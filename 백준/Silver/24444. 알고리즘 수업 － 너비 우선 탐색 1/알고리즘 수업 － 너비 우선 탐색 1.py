@@ -7,7 +7,7 @@ input = sys.stdin.readline
 
 
 def bfs(s):
-    global cnt
+    cnt=1
     q = deque()
     q.append(s)
     v[s]=1
@@ -29,7 +29,7 @@ N,M,R = map(int,input().split())
 
 arr=[[] for _ in range(N+1)]
 v=[0]*(N+1)
-cnt=1
+
 
 for _ in range(M):
     x,y = map(int,input().split())
