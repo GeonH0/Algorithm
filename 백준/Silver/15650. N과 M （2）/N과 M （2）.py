@@ -1,13 +1,25 @@
-n,m = list(map(int,input().split()))
-s=[]
 
-def dfs(start):
-    if len(s)==m:
-        print(' '.join(map(str,s)))
+
+
+def dfs(n,lst):
+
+    #종료 조건
+    if n > N:
+        if len(lst) == M: #길이가 M이 되면
+            ans.append(lst)
         return
-    for i in range(start,n+1):
-        if i not in s:
-            s.append(i)
-            dfs(i+1)
-            s.pop()
-dfs(1)
+    dfs(n+1,lst+[n]) # 선택
+    dfs(n+1,lst)# 선택 하지 않을 경우
+    
+
+
+
+
+
+N,M = map(int,input().split())
+
+
+ans=[]
+dfs(1,[])
+for i in ans:
+    print(*i)
