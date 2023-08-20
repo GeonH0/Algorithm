@@ -1,17 +1,30 @@
-def dfs(depth,idx):
-    if depth ==6:
-        print(*out)
+def dfs(n,s,lst):
+    if n == 6:
+        ans.append(lst)
         return
-    for i in range(idx,k):
-        out.append(S[i])
-        dfs(depth+1,i+1)
-        out.pop()
+
+    for j in range(s,len(arr)):
+        if v[j]==0:   
+            v[j]=1
+            dfs(n+1,j+1,lst+[arr[j]])
+            v[j]=0
+        
+        
+
+
+        
+
+
+
 while True:
-    arr= list(map(int,input().split()))
-    k=arr[0]
-    S=arr[1:]
-    out=[]
-    dfs(0,0)
-    if k==0:
-        exit()
+    
+    arr=list(map(int,input().split()))
+    if arr[0]==0:
+        break
+    k = arr.pop(0)
+    v=[0]*len(arr)
+    ans =[]
+    dfs(0,0,[])
+    for i in ans:
+        print(*i)
     print()
