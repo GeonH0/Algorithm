@@ -1,15 +1,15 @@
-n = int(input())
-a = list(map(int,input().split()))
-cnt =[1]*n
-
-for i in range(1,n):
-    for j in range(i):
-        if a[i]>a[j]:
-            cnt[i] = max(cnt[i],cnt[j]+1)
-print(max(cnt))
-    
 
 
-    
-    
-    
+
+N = int(input())
+arr =[0]+ list(map(int,input().split()))
+dp =[0]*(N+1)
+dp[0] =0
+for i in range(1,N+1):
+    mx =0
+    for j in range(0,i):
+        if arr[i]>arr[j]:
+            mx = max(mx,dp[j])
+    dp[i] = mx + 1
+
+print(max(dp))
