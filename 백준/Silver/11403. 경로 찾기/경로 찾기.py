@@ -1,23 +1,33 @@
 
 
 
-
-
 from collections import deque
 
 
+def bfs(x):
+    q = deque()    
+    q.append(x)
+    check = [0 for _ in range(N)]
+    while q:
+        c = q.popleft()
 
-    
+        for i in range(N):
+            if check[i] == 0 and arr[c][i] ==1 :
+                q.append(i)
+                check[i] = 1
+                v[x][i] = 1
+
 
 N = int(input())
-arr = [list(map(int,input().split())) for _ in range(N)]
-for k in range(N):
-    for i in range(N):
-        for j in range(N):
-            if arr[i][j] == 1 or (arr[i][k] == 1 and arr[k][j]==1):
-                arr[i][j]=1
+arr= []
+v= [[0]* N for _ in range(N)]
 
-for i in range(N):
-    for j in range(N):
-        print(arr[i][j],end = " ")                 
-    print()
+for _ in range(N):
+    arr.append(list(map(int,input().split())))
+
+
+for i in range(0,N):
+    bfs(i)
+
+for i in v:
+    print(*i)
