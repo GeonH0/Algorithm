@@ -1,32 +1,29 @@
+from collections import deque
 
-def bfs(si,sj,ei,ej):
-    q =[]
-    v = [[0]*M for _ in range(N)]
 
+def bfs(si,sj):
+    q = deque()
     q.append((si,sj))
-    v[si][sj]=1
+
+    v[si][sj] = 1
 
     while q:
-        ci,cj = q.pop(0)
-        #정답 처리
-
-        if(ci,cj) == (ei,ej):
-            return v[ei][ej]
-
-        #4방향, 범위내, 조건에 맞으면 실행
-        for di,dj in ((-1,0),(1,0),(0,-1),(0,1)): #상, 하, 좌, 우
-            ni,nj = ci+di,cj+dj
-            if 0<=ni<N and 0<=nj<M and arr[ni][nj]==1 and v[ni][nj]==0:
-                q.append((ni,nj))
-                v[ni][nj] = v[ci][cj]+1
+        ci, cj = q.popleft()
+        for dx, dy in ((1, 0), (-1, 0), (0, 1), (0, -1)):
+            nx, ny = dx + ci, dy + cj
+            if 0 <= nx < N and 0 <= ny < M:
+                if arr[nx][ny] == 0 or v[nx][ny] != 0:
+                    continue
+                v[nx][ny] = v[ci][cj] + 1
+                q.append((nx, ny))
 
 
 
+N,M  = map(int,input().split())
+arr= []
+v=[[0]*M for _ in range(N)]
+for _ in range(N):
+    arr.append(list(map(int,input().strip())))
 
-N,M = map(int,input().split())
-arr= [list(map(int,input())) for _ in range(N)]
-
-
-
-ans = bfs(0,0,N-1,M-1)#시작좌표와 끝 좌포 설정
-print(ans)
+bfs(0,0)
+print(v[N-1][M-1])
