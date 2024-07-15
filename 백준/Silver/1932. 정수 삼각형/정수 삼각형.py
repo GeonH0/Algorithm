@@ -1,17 +1,24 @@
 
 
-N= int(input())
-rect = []
+N = int(input())
+arr = []
+cnt = 0
+
 for _ in range(N):
-    rect.append(list(map(int,input().split())))
+    arr.append(list(map(int,input().split())))
 
 
 for i in range(1,N):
-    for j in range(len(rect[i])):
-        if j==0:
-            rect[i][j] = rect[i][j] + rect[i-1][j]
-        elif j == len(rect[i])-1:
-            rect[i][j] = rect[i][j]+rect[i-1][j-1]
+    for j in range(i+1):
+        # 0번째 항목은 아래의 0번째와 더한다.
+        if j == 0:
+            arr[i][j] += arr[i-1][j]
+        #마지막 항목은 바로 아래의 마지막 항목과 더한다
+        elif j == i:
+            arr[i][j] += arr[i-1][j-1]
+        # 그게 아닐경우 두 화살표중 더 큰 경우를 더한다.
         else:
-            rect[i][j]=max(rect[i-1][j-1],rect[i-1][j])+rect[i][j]
-print(max(rect[N-1]))
+            arr[i][j] += max(arr[i-1][j-1],arr[i-1][j])
+
+print(max(arr[N-1]))
+
