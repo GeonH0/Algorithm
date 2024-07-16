@@ -1,39 +1,54 @@
-import sys
-from typing import Deque
-input = sys.stdin.readline
 
-def dfs(n):
-    print(n,end=' ')
-    visited[n] = True
-    for i in graph[n]:
-        if not visited[i]:
-            dfs(i)
-        
-def bfs(n):
-    visited[n]= True
-    queue = Deque([n])
+from collections import deque
+
+
+def bfs(C):
+    q = deque()
+    q.append(C)
+    ans_bfs.append(C)
+    v[C] = 1
+    while q:
+        c = q.popleft()
+        for i in arr[c]:
+            if v[i] == 0:
+                q.append(i)
+                ans_bfs.append(i)
+                v[i] = 1
+
+def dfs(c):
     
-    while queue:
-        v = queue.popleft()
-        print(v,end=' ')
-        for i in graph[v]:
-            if not visited[i]:
-                queue.append(i)
-                visited[i] = True
+    ans_dfs.append(c) # 정답 처리
+    v[c] = 1 # 방문 표시
 
-n,m,v = map(int,input().split())
-graph=[[] for _ in range(n+1)]
-visited = [False]*(n+1)
+    for i in arr[c]:
+        if v[i] == 0 :
+            dfs(i)
+    
 
-for _ in range(m):
+
+
+
+N,M,V = map(int,input().split())
+arr = [[] for _ in range(N+1)]
+
+ans =[]
+for _ in range(M):
     a,b = map(int,input().split())
-    graph[a].append(b)
-    graph[b].append(a)
+    arr[a].append(b)
+    arr[b].append(a)
 
-for i in range(1,n+1):
-    graph[i].sort()
+for i in range(1,N+1):
+    arr[i].sort()
 
-dfs(v)
-visited=[False]*(n+1)
-print()
-bfs(v)
+
+v=[0]*(N+1)
+ans_dfs= []
+dfs(V)
+
+v = [0]*(N+1)
+ans_bfs= []
+bfs(V)
+
+print(*ans_dfs)  
+print(*ans_bfs)  
+
