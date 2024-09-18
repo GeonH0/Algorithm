@@ -28,7 +28,7 @@ for i in value {
         }
     }
     
-    if cnt.count >= 4 {
+    if cnt.count >= 3 {
         for j in 3..<cnt.count {
             if cnt[j-3] > cnt[j-2] && cnt[j-2] > cnt [j-1] && cnt[j-1] > cnt[j] {
                 while Sm >= i {
