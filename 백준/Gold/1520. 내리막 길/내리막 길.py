@@ -1,34 +1,31 @@
+import sys
+sys.setrecursionlimit(10000)
 
+# 방향: 상, 하, 좌, 우
+dx = [-1, 1, 0, 0]
+dy = [0, 0, -1, 1]
 
-
-def dfs(ci,cj):
-
-    if dp[ci][cj] == -1: #계산이 아직 안되있을 경우
-        #4방향 더 높은 곳으로부터 낮은곳 방문시 경로수 누적
-        dp[ci][cj] = 0 
-        for di, dj in ((-1, 0), (1, 0), (0, -1), (0, 1)):
-            pi,pj = ci+di,cj+dj
-            if arr[pi][pj] > arr[ci][cj]: #내리막일 경우
-                dp[ci][cj] += dfs(pi,pj)
-
-    return dp[ci][cj]
+def routeCheck(x, y):
+    if x == M-1 and y == N-1:
+        return 1  # 도착점에 도착한 경우 경로 1개 추가
     
+    if dp[x][y] != -1:
+        return dp[x][y]  # 이미 계산된 경로가 있으면 그 값 반환
+    
+    dp[x][y] = 0  # 아직 계산되지 않은 경우 경로를 0으로 초기화
+    
+    for i in range(4):
+        nx = x + dx[i]
+        ny = y + dy[i]
+        
+        if 0 <= nx < M and 0 <= ny < N and arr[x][y] > arr[nx][ny]:
+            dp[x][y] += routeCheck(nx, ny)  # 경로 탐색
+    
+    return dp[x][y]
 
+M, N = map(int, input().split())
+arr = [list(map(int, input().split())) for _ in range(M)]
+dp = [[-1] * N for _ in range(M)]  # 경로를 기록하는 dp 테이블
 
-         
-
-
-
-
-N,M = map(int,input().split())
-
-
-arr=[[0]*(M+2)]+[[0] + list(map(int,input().split()))+[0] for _ in range(N)] +[[0]*(M+2)]
-
-#dp 테이블 생성 및 초기값 설정
-dp = [[-1]*(M+2) for _ in range(N+2)]
-dp[1][1] = 1
-
-print(dfs(N,M))
-
-
+# 출발점에서 경로를 탐색 시작
+print(routeCheck(0, 0))
