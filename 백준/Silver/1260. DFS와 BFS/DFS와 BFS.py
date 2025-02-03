@@ -1,54 +1,41 @@
 
+
 from collections import deque
 
 
-def bfs(C):
-    q = deque()
-    q.append(C)
-    ans_bfs.append(C)
-    v[C] = 1
+def dfs(graph,v,visited):
+    visited[v] = True
+    print(v, end = " ")
+    for i in graph[v]:
+        if not visited[i]:
+            dfs(graph,i,visited)
+
+def bfs(graph,start,visited):
+    q = deque([start])
+    visited[start] = True
+
     while q:
-        c = q.popleft()
-        for i in arr[c]:
-            if v[i] == 0:
+        v = q.popleft()
+        print(v, end = " ")
+        for i in graph[v]:
+            if not visited[i]:
                 q.append(i)
-                ans_bfs.append(i)
-                v[i] = 1
-
-def dfs(c):
+                visited[i] = True
     
-    ans_dfs.append(c) # 정답 처리
-    v[c] = 1 # 방문 표시
-
-    for i in arr[c]:
-        if v[i] == 0 :
-            dfs(i)
-    
-
-
-
 
 N,M,V = map(int,input().split())
-arr = [[] for _ in range(N+1)]
+graph = [[]for _ in range(N+1)]
 
-ans =[]
 for _ in range(M):
     a,b = map(int,input().split())
-    arr[a].append(b)
-    arr[b].append(a)
+    graph[a].append(b)
+    graph[b].append(a)
 
-for i in range(1,N+1):
-    arr[i].sort()
-
-
-v=[0]*(N+1)
-ans_dfs= []
-dfs(V)
-
-v = [0]*(N+1)
-ans_bfs= []
-bfs(V)
-
-print(*ans_dfs)  
-print(*ans_bfs)  
-
+for i in range(1, N+1):
+    graph[i].sort()
+    
+visited = [False] * (N+1)
+dfs(graph,V,visited)
+print()
+visited = [False] * (N+1)
+bfs(graph,V,visited)
