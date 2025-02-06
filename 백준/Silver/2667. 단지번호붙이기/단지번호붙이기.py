@@ -1,35 +1,44 @@
-N = int(input())
 
-arr=[]
-def bfs(si,sj):
-    q =[]
-    q.append((si,sj))
-    v[si][sj]=1 # 방문표시
-    cnt =1 #정답 처리 관련 갯수
+from collections import deque
+
+
+def bfs(x,y):
+    q = deque()
+    q.append((x,y))
+    cnt = 1 # 집의 총 갯수
+    visited[x][y] = 1 # 방문처리
+
     while q:
-        ci,cj = q.pop(0)
-        for di,dj in ((-1,0),(1,0),(0,-1),(0,1)): #상, 하, 좌, 우
-            ni,nj= ci+di,cj+dj
-            if 0<=ni<N and 0 <=nj <N and arr[ni][nj]==1 and v[ni][nj]==0:
-                q.append((ni,nj))
-                v[ni][nj]= 1
+        cx,cy = q.popleft()
+        for i in range(4):
+            nx = dx[i] + cx
+            ny = dy[i] + cy
+
+            if 0<= nx < N and 0 <= ny < N and graph[nx][ny] == 1 and visited[nx][ny] == 0:
+                visited[nx][ny] = 1
+                q.append((nx,ny))
                 cnt +=1
     return cnt
-        
 
 
 
-for _ in range(N):
-    arr.append(list(map(int,input())))
+dx = [-1,1,0,0]
+dy = [0,0,-1,1]
 
-v=[[0]*N for _ in range(N)]
-ans =[]
+N = int(input())
 
+graph = [ list(map(int,input())) for _ in range(N)]
+visited = [[0]*N for _ in range(N)]
 
+dan_cnt = 0
+dan_size = []
 for i in range(N):
     for j in range(N):
-        if arr[i][j]==1 and v[i][j]==0:
-            ans.append(bfs(i,j))
-ans.sort()
-print(len(ans),*ans,sep='\n')
+        if graph[i][j] == 1 and visited[i][j] == 0:            
+            dan_size.append(bfs(i,j))
+            dan_cnt +=1
 
+print(dan_cnt)
+dan_size.sort()
+for i in dan_size:
+    print(i)
