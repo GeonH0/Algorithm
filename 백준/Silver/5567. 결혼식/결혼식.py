@@ -1,29 +1,41 @@
-import imp
+from collections import deque
+
+# cnt를 2로 제한하여 친구의 친구 까지만 제한
+def bfs(arr,start):    
+    q = deque()
+    q.append((start,0))
+    visited[start] = True
+    cnt = 0  
+    while q:        
+        c,d = q.popleft()
+        if d >= 2:
+            continue
+        for i in arr[c]:
+            if not visited[i]:                
+                q.append((i,d+1))
+                visited[i] = True
+                cnt +=1
+    return cnt
 
 
-import sys
-from collections import defaultdict,deque
 
 
-def bfs(start):
-    cnt =0
-    visited =[0 for _ in range(n+1)]
-    visited[start]=1
-    queue = deque([[start,0]])    
-    while queue:
-        u,dist = queue.popleft()
-        if dist<=2:
-            cnt +=1
-        for v in g[u]:
-            if not visited[v]:
-                visited[v]=1
-                queue.append([v,dist+1])
-    return cnt -1
-n = int(input().strip())
-m = int(input().strip())
-g= defaultdict(list)
+
+n = int(input())
+m = int(input())
+graph = [[] for _ in range(n+1)]
+
 for _ in range(m):
     a,b = map(int,input().split())
-    g[a].append(b)
-    g[b].append(a)
-print(bfs(1))
+    graph[a].append(b)
+    graph[b].append(a)
+
+visited = [False] * (n+1)
+visited[1] = True
+
+
+if not graph[1]:
+    print(0)
+else:
+    bfs(graph,1)
+    print(sum(visited)-1)
