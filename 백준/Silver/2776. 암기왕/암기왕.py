@@ -1,4 +1,10 @@
 
+
+import sys
+
+
+input = sys.stdin.readline
+
 def binary_search(arr,target):
     start = 0
     end = len(arr) - 1
