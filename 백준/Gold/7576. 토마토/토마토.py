@@ -1,46 +1,40 @@
 
-
-
-
 from collections import deque
 
 
 def bfs():
-
-    q = deque()
-    v=[[0]*M for _ in range(N)]
-
-    cnt =0
-    for i in range(N):
-        for j in range(M):
-            if arr[i][j] == 1:
-                q.append((i,j))        
-                v[i][j] =1
-            elif arr[i][j]==0:
-                cnt +=1
+    time = 0
     while q:
-        ci,cj = q.popleft()
-        for di,dj in ((-1,0),(1,0),(0,-1),(0,1)): #상, 하, 좌, 우
-            ni,nj = ci+di,cj+dj
-            #좌표가 범위안에 있고, 미로가 1이면서 visited배열에 방문하지 않았으며 조건 충족
-            if 0<=ni<N and 0<=nj<M  and v[ni][nj]==0 and arr[ni][nj]==0:
-                q.append((ni,nj))
-                v[ni][nj] = v[ci][cj]+1
-                cnt -=1
-    if cnt == 0:
-        return v[ci][cj]-1
-    else:
-        return -1
-
-
-
-
-
-
-
+        cx,cy,ct = q.popleft()
+        time = max(ct,time)
+        for i in range(4):
+            nx = dx[i] + cx
+            ny = dy[i] + cy
+            if 0<=nx<N and 0<=ny<M and graph[nx][ny] == 0:
+                q.append((nx,ny,time+1))                
+                graph[nx][ny] = 1
+    return time
+                
+    
+                
+dx = [-1,1,0,0]
+dy = [0,0,-1,1]
 M,N = map(int,input().split())
 
-arr=[list(map(int,input().split())) for _ in range(N)]
+graph = [list(map(int,input().split())) for _ in range(N)]
+q = deque()
 
-ans = bfs()
-print(ans)
+for i in range(N):
+    for j in range(M):
+        if graph[i][j] == 1:
+            q.append((i,j,0))
+
+result= bfs()
+for i in range(N):
+    for j in range(M):
+        if graph[i][j] == 0:
+            print(-1)
+            exit()
+print(result)
+           
+            
