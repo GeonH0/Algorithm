@@ -1,28 +1,42 @@
-n = int(input())
-arr=[]
-for _ in range(n):
-    arr.append(list(map(str,input())))
 
 
-res=[0,0]
 
-for i in range(n):
-    h,v = 0,0
-    for j in range(n):
-        if arr[i][j]=='.':
-            h+=1
-        else:
-            h=0
-        if h==2:
-            res[0]+=1
+    
+    
         
-        if arr[j][i]=='.':
-            v +=1
+
+
+
+
+N = int(input())
+
+arr = [list(input().strip()) for _ in range(N)]
+
+h = 0
+v = 0
+
+for i in range(N):
+    cnt = 0
+    for j in range(N):
+        if arr[i][j] == '.':
+            cnt +=1
         else:
-            v=0
-        if v==2:
-            res[1]+=1
+            if cnt >=2:
+                h +=1
+            cnt = 0
+    if cnt >=2:
+        h +=1
 
+for j in range(N):
+    cnt = 0
+    for i in range(N):
+        if arr[i][j] == '.':
+            cnt +=1
+        else:
+            if cnt >=2:
+                v +=1
+            cnt =0
+    if cnt >=2:
+        v +=1
+print(h,v)
 
-        
-print(*res)
