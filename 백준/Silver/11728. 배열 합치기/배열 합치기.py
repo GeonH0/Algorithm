@@ -1,8 +1,8 @@
-n,m = map(int,input().split())
-arr= list(map(int,input().split()))
-arr1=list(map(int,input().split()))
 
-arr.extend(arr1)
-arr.sort()
-for i in arr:
-    print(i,end=" ")
+
+N,M = map(int,input().split())
+A = list(map(int,input().split()))
+B = list(map(int,input().split()))
+ans = A + B
+ans.sort()
+print(" ".join(map(str,ans)))
