@@ -1,46 +1,47 @@
+
 from collections import deque
 
 
 
-
 def bfs():
-    #q 생성, visited 생성
-    q = deque()
-    v=[[[0]*M for _ in range(N)] for _ in range(H)]
+    while tomato_queue:
+        cz,cx,cy = tomato_queue.popleft()
+        for i in range(6):
+            nx = cx + dx[i]
+            ny = cy + dy[i]
+            nz = cz +dz[i]
+            if 0<=nx < N and 0<=ny < M and 0<=nz < H:
+                if arr[nz][nx][ny] == 0: # 범위 안에 있으면서 0 일경우
+                    arr[nz][nx][ny] = arr[cz][cx][cy] +1
+                    tomato_queue.append((nz,nx,ny))
 
-    #초기 데이터 삽입, 안익은 토마토 카운트
-    cnt =0
-    for h in range(H):
-        for i in range(N):
-            for j in range(M):
-                if arr[h][i][j] == 1: #익은 토마토
-                    q.append((h,i,j))
-                    v[h][i][j]=1
-                elif arr[h][i][j]==0: # 안익은 토마토
-                    cnt +=1
-    while q:
-        ch,ci,cj = q.popleft()
-        for dh,di,dj in ((0,-1,0),(0,1,0),(0,0,-1),(0,0,1),(-1,0,0),(1,0,0)): #3차원 6방향
-            nh,ni,nj = ch+dh,ci+di,cj+dj
-            if 0<=nh <H and 0<=ni<N and 0<=nj<M and v[nh][ni][nj]==0 and arr[nh][ni][nj]==0: #범위내에 있으면서 미 방문한 거
-                q.append((nh,ni,nj))
-                v[nh][ni][nj]= v[ch][ci][cj]+1
-                cnt -=1 #익은 토마토는 감소
-    
-    if cnt ==0:
-        return v[ch][ci][cj]-1
-    
-    else:
-        return -1
-    
-    
-    
         
 
 
-M,N,H = map(int,input().split())
-arr=[[list(map(int,input().split())) for _ in range(N)] for _ in range(H)]
+M,N,H =map(int,input().split())
+dx = [-1,1,0,0,0,0]
+dy = [0,0,-1,1,0,0]
+dz = [0,0,0,0,-1,1]
 
-ans = bfs()
-print(ans)
+arr = []
+for _ in range(H):
+    arr.append([list(map(int,input().split())) for _ in range(N)])
 
+tomato_queue = deque()
+
+for k in range(H):
+    for i in range(N):
+        for j in range(M):
+            if arr[k][i][j] == 1:
+                tomato_queue.append((k,i,j))
+
+bfs()
+
+if any(0 in row for floor in arr for row in floor):
+    print(-1)
+else:
+    max_days = max(max(row) for floor in arr for row in floor)
+    if max_days == 1:
+        print(0)
+    else:
+        print(max_days - 1)
