@@ -1,44 +1,59 @@
-
-
 from collections import deque
+import sys
 
 
-
-def bfs(si,sj,h):
-    q=deque()
-    
-    q.append((si,sj))
-    v[si][sj]=1 
-    
-    while q:
-        ci,cj = q.popleft()        
-         #4방향, 범위내, 조건에 맞으면 실행
-        for di,dj in ((-1,0),(1,0),(0,-1),(0,1)): #상, 하, 좌, 우
-            ni,nj = ci+di,cj+dj
-            if 0<=ni<N and 0<=nj<N and arr[ni][nj] > h and v[ni][nj]==0:
-                q.append((ni,nj))
-                v[ni][nj] = 1
-
-
-
-
-def solve(h): #h 높이에 대해 return 하는 함수
-    cnt =0
+def check(x):
+    visited =[[False] * N for _ in range(N)]
     for i in range(N):
         for j in range(N):
-            if  v[i][j]==0 and arr[i][j]> h :
-                bfs(i,j,h)
-                cnt +=1
-    return cnt
+            if arr[i][j] <= x:
+                visited[i][j] = True
+    return visited
+
+
+def bfs(x,y,visited):
+    q = deque()
+    q.append((x,y))
+    visited[x][y] = True
+
+    while q:
+        cx,cy= q.popleft()
+        for i in range(4):
+            nx = cx + dx[i]
+            ny = cy + dy[i]
+            if 0<=nx<N and 0<=ny<N and not visited[nx][ny]:
+                visited[nx][ny] = True
+                q.append((nx,ny))
+                
+
+    
+
+dx = [-1,1,0,0]
+dy = [0,0,-1,1]    
+
+input = sys.stdin.readline
+
 
 N = int(input())
-arr = [list(map(int,input().split())) for _ in range(N)]
+arr = []
+for _ in range(N):
+    arr.append(list(map(int,input().split())))
 
 ans = 0
 
-for h in range(100): # 0~99까지 물 높이 지정
-    v=[[0]*N for _ in range(N)]
-    ans = max(ans,solve(h))
+min_height = min(map(min, arr))
+max_height = max(map(max, arr))
+
+for k in range(min_height-1,max_height+1):    
+    visited = check(k)    
+    cnt = 0 # 안전 지대 count
+    
+    for i in range(N):
+        for j in range(N):
+            if not visited[i][j]:                
+                bfs(i,j,visited)
+                cnt +=1
+    ans = max(ans,cnt)
 
 print(ans)
-
+            
