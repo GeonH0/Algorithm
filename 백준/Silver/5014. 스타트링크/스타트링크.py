@@ -1,27 +1,31 @@
 
 from collections import deque
+import sys
+input = sys.stdin.readline
 
-
-def bfs(s,e):
+def bfs(s,g):
     q = deque()
-    v=[0]*(F+1)
-
-    q.append(s)
-    v[s]=1
-
+    q.append(s)    
+    visited[s] = 0
     while q:
-        c = q.popleft()
-        if c == e:
-            return v[c]-1
+        cx = q.popleft()
+        for i in range(2):
+            nx = cx + dx[i]
+            if 1<=nx <=F and visited[nx] == -1:
+                visited[nx] = visited[cx] +1
+                if nx == g:
+                    return visited[nx]
+                q.append(nx)
+    return 'use the stairs'
 
-        for n in (c+U,c-D):
-            if 1<=n<=F and v[n]==0:
-                q.append(n)
-                v[n] = v[c]+1
-    return "use the stairs"
-
-
-F,S,G,U,D  = map(int,input().split())
-
-ans = bfs(S,G)
-print(ans)
+F,S,G,U,D = map(int,input().split())
+dx =[U,-D]
+visited = [-1] * (F+1)
+if S == G:
+    print(0)
+    sys.exit()
+elif U == 0 and D ==0:
+    print('use the stairs')
+    sys.exit()
+else:
+    print(bfs(S,G))
