@@ -1,38 +1,32 @@
 import sys
-input= sys.stdin.readline
+input = sys.stdin.readline
 
+M = int(input())
+ans = set()
+for _ in range(M):
+    action = list(map(str,input().split()))
+    if len(action) == 1:
+        if action[0] == 'all':
+            ans = set(range(1, 21))
 
-s= set()
-
-m = int(input())
-
-for i in range(m):
-    a = input().split()
-    if len(a)==1:
-        if a[0]=='all':
-            s= set([x for x in range(1,21)])
-        else:
-            s= set()
+        elif action[0] == 'empty':
+            ans = set()
     else:
-        c,d = a[0],int(a[1])
-
-        if c =='add':
-            s.add(d)
-        elif c == 'check':
-            if d in s:
+        if action[0] == 'add':
+            ans.add(int(action[1]))
+        elif action[0] == 'remove':
+            if int(action[1]) in ans:
+                ans.remove(int(action[1]))
+                
+            else:
+                continue
+        elif action[0] == 'check':
+            if int(action[1]) in ans:                
                 print(1)
-            else:
+            else:                
                 print(0)
-
-        elif c== 'remove':
-            if d in s:
-                s.discard(d)
-
-        elif c=='toggle':
-            if d in s:
-                s.discard(d)
+        elif action[0] == 'toggle':
+            if int(action[1]) in ans:
+                ans.remove(int(action[1]))
             else:
-                s.add(d)
-        
-                
-                
+                ans.add(int(action[1]))
