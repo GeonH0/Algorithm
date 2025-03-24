@@ -1,24 +1,24 @@
-N,K = map(int,input().split())
+import sys
+input = sys.stdin.readline
 
-arr = []
+N, K = map(int, input().split())
+countries = []
 
 for _ in range(N):
-    num,gold,sliver,bronze = map(int,input().split())
-    arr.append((num,gold,sliver,bronze))
+    num, gold, silver, bronze = map(int, input().split())
+    countries.append((num, gold, silver, bronze))
 
-arr.sort(key = lambda x: (-x[1],-x[2],-x[3]))
+# 금, 은, 동 내림차순 정렬
+countries.sort(key=lambda x: (-x[1], -x[2], -x[3]))
 
-rank = 1
-same = 1
-
+rank = 1  # 현재 순위
 for i in range(N):
-    if arr[i][0] == K:
+    if i > 0:
+        # 이전 나라와 메달 수가 다르면 순위 업데이트
+        if countries[i][1:] != countries[i - 1][1:]:
+            rank = i + 1  # 0-indexed → 등수는 i+1
+
+    # 찾고자 하는 국가 번호일 때 출력
+    if countries[i][0] == K:
         print(rank)
         break
-    
-    # 메달 순위가 같으면 rank 유지
-    if i > 0 and arr[i][1:] == arr[i-1 ][1:]:
-        same+= 1
-    else:
-        rank = i+1
-        same = 1
