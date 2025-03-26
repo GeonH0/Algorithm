@@ -1,25 +1,34 @@
 import sys
 input = sys.stdin.readline
 
-n = int(input())
-m = int(input())
-x= list(map(int,input().split()))
-l = len(x)
-h = 0
+N = int(input())
+M = int(input())
+lights = list(map(int, input().split()))
 
-if l ==1:
-    h = max(x[0]-0,n-x[0])
-else:
-    for i in range(l):
-        if i==0:
-            height = x[i]-0
-        elif i == l-1:
-            height = n-x[i]
-        else:
-            tmp = x[i]-x[i-1]
-            if tmp%2:
-                height = tmp //2 +1
-            else:
-                height = tmp //2
-        h = max(height,h)
-print(h)
+def is_possible(h):
+    # 스위핑 구간 방식
+    covered = 0
+    for light in lights:
+        left = light - h
+        right = light + h
+
+        # 밝히지 못한 구간이 있으면 실패
+        if left > covered:
+            return False
+        covered = max(covered, right)
+
+    return covered >= N  # 끝까지 도달했는지 확인
+
+start = 0
+end = N
+answer = N
+
+while start <= end:
+    mid = (start + end) // 2
+    if is_possible(mid):
+        answer = mid
+        end = mid - 1
+    else:
+        start = mid + 1
+
+print(answer)
