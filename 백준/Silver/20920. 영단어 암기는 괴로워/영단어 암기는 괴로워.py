@@ -1,18 +1,24 @@
+
+
+# 자주 나오는 단어일수록 앞에 배치, 
+# 단어의 길이가 길수록 앞에 배치, 
+# 알파벳 사전 순으로 앞에 있는 단어일수록 앞에 뱇
+
 import sys
+
+
 input = sys.stdin.readline
-
 N,M = map(int,input().split())
-dic = {}
+note = {}
 for _ in range(N):
-    word = input().rstrip()
-
-    if len(word) <M:
-        continue
-    else:
-        if word in dic:
-            dic[word] +=1
+    word = input().strip()
+    if len(word)>=M:
+        if word in note:
+            note[word] += 1
         else:
-            dic[word] = 1
-dic = sorted(dic.items() , key = lambda x : (-x[1], -len(x[0]) ,x[0]) )
-for i in dic:
+            note[word] = 1
+
+sorted_words = sorted(note.items(), key = lambda x: (-x[1],-len(x[0]),x[0]))
+
+for i in sorted_words:
     print(i[0])
