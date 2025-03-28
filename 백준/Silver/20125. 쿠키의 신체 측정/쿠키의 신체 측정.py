@@ -1,49 +1,52 @@
 
+def src(x,y):
+    left,right,line,leftfoot,rightfoot =0 ,0,0,0,0
+    waist_end = 0
+    
+    for i in range(N):
+        if arr[x+1][i] == "*" and i < y:
+            left +=1
+        elif arr[x+1][i] == "*" and i > y:
+            right +=1
 
-N = int(input())
-arr=[]
-h = 0
-hx = 0
-hy = 0
-leftarm = 0
-rightarm = 0
-leftleg = 0
-rightleg = 0
-
-for _ in range(N):
-    arr.append(list(str(input())))
-
-for i in range(N):
-    for j in range(N):        
-        if h == 0 and arr[i][j] == "*":
-            h = 1        
-            hx = i+2
-            hy = j +1
-            print(hx,hy)
+    for j in range(x+2,N):        
+        if arr[j][y] == "*":
+            line +=1
+            waist_end = j
+        else:
             break
+    
+
+    for i in range(waist_end + 1, N):        
+        if y - 1 >= 0 and arr[i][y - 1] == "*":
+            leftfoot += 1
+        if y + 1 < N and arr[i][y + 1] == "*":
+            rightfoot += 1
+                
+        
             
 
-for i in range(hy-1):
-    if arr[hx-1][i] == "*":
-        leftarm +=1
-for i in range(hy,N):
-    if arr[hx-1][i] == "*":
-        rightarm +=1
+            
 
-back = 0
-line = 0
-for i in range(hx,N):
-    if arr[i][hy-1] == "*":
-        back +=1
-        line = i
+    return left,right,line,leftfoot,rightfoot
+        
 
-for i in range(N-1,line, -1):
-    if arr[i][hy-2] == "*":
-        leftleg+=1
+N = int(input())
+arr =[input().rstrip() for _ in range(N)]
 
-for i in range(N-1,line,-1):
-    if arr[i][hy] == "*":
-        rightleg +=1
+head = False
+headx,heady = 0,0
+heartx,hearty = 0,0
 
-print(leftarm,rightarm,back,leftleg,rightleg)
-           
+for i in range(N):
+    for j in range(N):
+        if arr[i][j] == "*" and head == False:
+            headx = i
+            heady = j
+            
+            head = True
+            print(i+2,j+1)
+            print(" ".join(map(str,src(i,j))))  
+
+
+
