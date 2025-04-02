@@ -1,16 +1,28 @@
-a,b = map(int,input().split())
-r=1
 
-while (b!=a):
-    r+=1
-    temp = b
-    if b%10 ==1:
-        b//=10
-    elif b%2==0:
-        b//=2
+from collections import deque
+import sys
+
+input = sys.stdin.readline
+
+def bfs(start,end):
     
-    if temp==b:
-        print(-1)
-        break
-else:
-    print(r)
+    q = deque()
+    q.append((start,1))
+    visited = set()
+    visited.add(start)
+    while q:
+        cur,cnt = q.popleft()
+        if cur == end:
+            return cnt
+        for next in [cur*2,cur*10+1]:
+            if next <= end and next not in visited:
+                visited.add(next)
+                q.append((next,cnt+1))
+    return -1
+
+
+
+A,B = map(int,input().split())
+
+
+print(bfs(A,B))
