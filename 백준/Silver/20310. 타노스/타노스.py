@@ -1,12 +1,29 @@
-# 입력 문자열 받기
-s = input().strip()
+import sys
 
-# 0과 1의 개수를 세기
-zero_count = s.count('0') // 2  # 남겨야 할 '0'의 개수
-one_count = s.count('1') // 2  # 남겨야 할 '1'의 개수
+s = list(sys.stdin.readline().rstrip())
 
-# 결과 생성
-result = '0' * zero_count + '1' * one_count
+n = s.count('0')
+m = s.count('1')
 
-# 출력
-print(result)
+#앞에서부터 1을 갯수의 절반 만큼 지우고, 뒤에서부터 0을 갯수의 절반 만큼 지우자.
+# 리스트를 역순하는 가장 쉬운 방법 [::-1]
+
+check = 0
+for i in s:
+    if check == m//2:
+        break
+    if i == '1':
+        s.remove(i)
+        check += 1
+
+check = 0
+s = s[::-1]
+for i in s:
+    if check == n//2:
+        break
+    if i == '0':
+        s.remove(i)
+        check += 1
+
+for i in s[::-1]:
+    print(i, end='')
